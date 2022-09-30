@@ -5,13 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Entity(name = "AppUser")
 @Table(name = "appuser",
@@ -52,21 +52,6 @@ public class AppUser implements Serializable {
     private int phoneNo;
 
     @Enumerated(value = EnumType.STRING)
-    private Role role;
-
-    @ManyToMany(fetch = FetchType.EAGER,
-                cascade = CascadeType.ALL)
-    @JoinTable(name = "app_user_posts",
-            joinColumns = @JoinColumn (
-                    name = "user_id",
-                    referencedColumnName = "id"
-            ),
-            inverseJoinColumns = @JoinColumn (
-                    name = "post_id",
-                    referencedColumnName = "id"
-            ),
-            catalog = "appjforcesch",
-            schema = "appjforcesch")
     @Builder.Default
-    private Collection<UserPosts> userPosts = new ArrayList<>();
+    private Role role = Role.ROLE_USER;
 }

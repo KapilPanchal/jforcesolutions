@@ -8,8 +8,6 @@ import java.util.List;
 public interface UserService {
     List<AppUser> getAllUsers();
 
-    String addPostToUser(String userpost, String username);
-
     String addUser(AppUser appuser);
 
     List<UserPosts> getAllPosts();
@@ -20,7 +18,7 @@ public interface UserService {
 
     UserPosts getPostByPost(String userpost);
 
-    UserPosts updateUser(UserPosts userpost);
+    UserPosts updateUser(long id, UserPosts userpost);
 
     void deletePost(Long id);
 }

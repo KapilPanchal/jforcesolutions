@@ -7,9 +7,9 @@ import com.appjforce.serverjforce.repository.PostRepository;
 import com.appjforce.serverjforce.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -26,31 +26,12 @@ public class UserServiceImpl implements UserService{
     public List<AppUser> getAllUsers() {
         log.info("Inside getAllUsers() method of UserService");
         List<AppUser> usersList;
-
         try{
           usersList = userRepo.findAll();
         } catch (Exception e){
             throw new CustomUserException("Users List not found!");
         }
         return usersList;
-    }
-
-    @Override
-    @Transactional
-    public String addPostToUser(String userpost, String username) {
-        log.info("Inside addPostToUser() method of UserService");
-
-        boolean userExists = userRepo.getByUsername(username).isPresent();
-        boolean postExists = postRepo.getByPost(userpost).isPresent();
-        AppUser userByUserName = userRepo.getByUsername(username).get();
-        UserPosts userPosts = postRepo.getByPost(userpost).get();
-
-        if((userExists == true) && (postExists==true)){
-            userByUserName.getUserPosts().add(userPosts);
-        } else {
-            throw new CustomUserException("User or posts does not exists!");
-        }
-        return "Post added to User Successfully";
     }
 
     @Override
@@ -79,13 +60,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public String addPost(UserPosts userPost) {
         log.info("Inside addPost() method of UserService");
-
         try {
             postRepo.saveAndFlush(userPost);
         } catch(Exception e) {
             throw new CustomUserException(e.getMessage());
         }
-
         return "Post Added Successfully";
     }
 
@@ -108,9 +87,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserPosts updateUser(UserPosts userpost) {
+    public UserPosts updateUser(long id, UserPosts userpost) {
         log.info("Inside updateUser() method of UserService");
-        return postRepo.saveAndFlush(userpost);
+        try {
+            postRepo.saveById(id, userpost.getUserposts());
+        } catch (Exception e){
+            throw new CustomUserException(e.getMessage());
+        }
+        return userpost;
     }
 
     @Override
@@ -118,7 +102,7 @@ public class UserServiceImpl implements UserService{
         log.info("Inside deletePost() method of UserService");
         try {
             postRepo.deleteById(id);
-        } catch (Exception e){
+        } catch (DataIntegrityViolationException e){
             throw new CustomUserException(e.getMessage());
         }
     }

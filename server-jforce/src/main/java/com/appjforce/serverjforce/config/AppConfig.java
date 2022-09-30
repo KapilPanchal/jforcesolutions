@@ -56,8 +56,8 @@ public class AppConfig {
 
             postRepo.saveAll(Stream.of(userPost1,userPost2).collect(Collectors.toList()));
 
-            String postAddStatus1 = userService.addPostToUser(userPost1.getUserposts(), userAdmin.getUsername());
-            String postAddStatus2 = userService.addPostToUser(userPost2.getUserposts(), userUser.getUsername());
+//            String postAddStatus1 = userService.addPostToUser(userPost1.getUserposts(), userAdmin.getUsername());
+//            String postAddStatus2 = userService.addPostToUser(userPost2.getUserposts(), userUser.getUsername());
         };
     }
 }

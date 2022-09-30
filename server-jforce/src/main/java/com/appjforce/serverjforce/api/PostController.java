@@ -38,14 +38,7 @@ public class PostController {
     @PostMapping(path = "/add-post")
     public ResponseEntity<Response> addPost(@RequestBody UserPosts userPost){
         log.info("Inside addPost() method of PostController");
-
         String postAddStatus = userService.addPost(userPost);
-
-        String username = "admin";
-        AppUser currentUser = userService.getUserByUsername(username);
-
-        userService.addPostToUser(userPost.getUserposts(), currentUser.getUsername());
-
         return ResponseEntity.ok(Response.builder()
                         .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
                         .status(HttpStatus.CREATED)
@@ -55,12 +48,12 @@ public class PostController {
                 .build());
     }
 
-    @PutMapping(path = "/update")
-    public ResponseEntity<Response> updatePost(@RequestBody UserPosts userPost){
+    @PutMapping(path = "/update/{id}")
+    public ResponseEntity<Response> updatePost(@PathVariable("id") long id, @RequestBody UserPosts userPost){
         log.info("Inside updatePost() method of PostController");
         return ResponseEntity.ok(
                 Response.builder()
-                        .data(Map.of("postupdated", userService.updateUser(userPost)))
+                        .data(Map.of("postupdated", userService.updateUser(id, userPost)))
                         .message("Post Updated successfully")
                         .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
                         .status(HttpStatus.OK)
