@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,22 +27,25 @@ public class AppConfig {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Bean
     CommandLineRunner runner (){
         return args -> {
             AppUser userAdmin = AppUser.builder()
                     .username("admin")
-                    .password("admin")
+                    .password(passwordEncoder.encode("admin"))
                     .emailId("admin@admin.com")
-                    .role(Role.ROLE_ADMIN)
+                    .role(Role.ADMIN)
                     .phoneNo(123456789)
                     .build();
 
             AppUser userUser = AppUser.builder()
                     .username("user1")
-                    .password("user1")
+                    .password(passwordEncoder.encode("user1"))
                     .emailId("user1@user1.com")
-                    .role(Role.ROLE_USER)
+                    .role(Role.USER)
                     .phoneNo(123444546)
                     .build();
             userRepo.saveAll(Stream.of(userAdmin,userUser).collect(Collectors.toList()));
@@ -55,9 +59,6 @@ public class AppConfig {
                     .build();
 
             postRepo.saveAll(Stream.of(userPost1,userPost2).collect(Collectors.toList()));
-
-//            String postAddStatus1 = userService.addPostToUser(userPost1.getUserposts(), userAdmin.getUsername());
-//            String postAddStatus2 = userService.addPostToUser(userPost2.getUserposts(), userUser.getUsername());
         };
     }
 }

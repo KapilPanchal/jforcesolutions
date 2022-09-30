@@ -53,5 +53,5 @@ public class AppUser implements Serializable {
 
     @Enumerated(value = EnumType.STRING)
     @Builder.Default
-    private Role role = Role.ROLE_USER;
+    private Role role = Role.USER;
 }

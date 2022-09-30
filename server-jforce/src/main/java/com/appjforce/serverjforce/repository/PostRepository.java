@@ -16,14 +16,9 @@ public interface PostRepository extends JpaRepository<UserPosts, Long> {
             nativeQuery = true)
     Optional<UserPosts> getByPost(String userpost);
 
-//    @Query(value = "UPDATE appjforcesch.userpost SET userposts = ?2 WHERE id = ?1",
-//            nativeQuery = true)
-//    void setByPost(long id, UserPosts userpost);
-
     @Query(value = "UPDATE appjforcesch.userpost SET userposts = ?2 WHERE id = ?1",
             nativeQuery = true)
     @Modifying
     @Transactional
-
     void saveById(long id, String userpost);
 }
