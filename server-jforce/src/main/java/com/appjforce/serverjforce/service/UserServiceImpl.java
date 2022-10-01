@@ -10,6 +10,7 @@ import com.appjforce.serverjforce.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private PostRepository postRepo;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<AppUser> getAllUsers() {
@@ -43,6 +47,7 @@ public class UserServiceImpl implements UserService{
         log.info("Inside addUser() method of UserController");
         try {
             appuser.setUsername(appuser.getUsername().toLowerCase(Locale.ROOT));
+            appuser.setPassword(passwordEncoder.encode(appuser.getPassword()));
             userRepo.saveAndFlush(appuser);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

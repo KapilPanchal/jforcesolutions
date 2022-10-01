@@ -2,18 +2,22 @@ package com.appjforce.serverjforce.api;
 
 import com.appjforce.serverjforce.model.Response;
 import com.appjforce.serverjforce.model.UserPosts;
+import com.appjforce.serverjforce.service.UserPrincipalService;
 import com.appjforce.serverjforce.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -30,7 +34,8 @@ public class PostController {
      * */
     @GetMapping(path = "/get-posts")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<Response> getAllPosts(){
+    public ResponseEntity<Response> getAllPosts() throws InterruptedException {
+//        TimeUnit.SECONDS.sleep(3);
         log.info("Inside getAllPosts() method of PostController");
         return ResponseEntity.ok(Response.builder()
                 .message("Fetching all posts successful")
