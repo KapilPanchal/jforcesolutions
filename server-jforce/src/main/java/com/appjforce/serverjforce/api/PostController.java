@@ -2,15 +2,12 @@ package com.appjforce.serverjforce.api;
 
 import com.appjforce.serverjforce.model.Response;
 import com.appjforce.serverjforce.model.UserPosts;
-import com.appjforce.serverjforce.service.UserPrincipalService;
 import com.appjforce.serverjforce.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZoneId;
@@ -92,7 +89,7 @@ public class PostController {
      *
      * */
     @DeleteMapping(path = "/delete/{id}")
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Response> deletePost(@PathVariable("id") String id){
         log.info("Inside deletePost() method of PostController");
         userService.deletePost(UUID.fromString(id));
