@@ -21,6 +21,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * Api for getting all users from the database
+     * This method is accessible to ROLE_ADMIN only
+     *
+     * */
     @GetMapping(path = "/get-users")
     public ResponseEntity<Response> getAllUsers(){
         log.info("Inside getAllUsers() method of UserController");
@@ -36,6 +41,11 @@ public class UserController {
         );
     }
 
+    /**
+     * Api for Adding user to the database
+     * This method is accessible to ROLE_USER and ROLE_ADMIN only
+     *
+     * */
     @PostMapping(path = "/add-user")
     public ResponseEntity<Response> addUser(@RequestBody AppUser appuser){
         log.info("Inside addUser() method of UserController");

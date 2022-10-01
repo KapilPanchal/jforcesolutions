@@ -7,28 +7,28 @@
                     <div class="row card-body text-left">
                         <h3 class="card-title">Sign up</h3>
                     </div>
-                    <form class="p-4" [formGroup]="registrationForm" (ngSubmit)="onRegistrationFormSubmit($event)">
+                    <form class="p-4" (ngSubmit)="onRegistrationFormSubmit($event)">
                         <div class="col mb-2">
                             <label class="form-label">Username</label>
-                            <input type="text" formControlName="username" class="form-control rounded-0"
+                            <input type="text" class="form-control rounded-0"
                                 id="firstName">
                         </div>
                         <div class="col mb-2">
                             <label class="form-label">Password</label>
-                            <input type="password" formControlName="password" class="form-control rounded-0"
+                            <input type="password" class="form-control rounded-0"
                                 id="password">
                         </div>
                         <div class="col mb-2">
                             <label class="form-label">Email address</label>
-                            <input type="email" formControlName="emailId" class="form-control rounded-0" id="email">
+                            <input type="email" class="form-control rounded-0" id="email">
                         </div>
                         <div class="col mb-2">
                             <label class="form-label">Phone Number</label>
-                            <input type="number" formControlName="phoneNumber" class="form-control rounded-0" id="phone">
+                            <input type="number" class="form-control rounded-0" id="phone">
                         </div>
                         <div class="col mb-2">
                             <label class="form-label">Role</label>
-                            <input type="text" formControlName="role" class="form-control rounded-0" id="phone">
+                            <input type="text" class="form-control rounded-0" id="phone">
                         </div>                        
                      
                         <div class="container overflow-hidden text-center mb-1">

@@ -3,6 +3,7 @@ package com.appjforce.serverjforce.service;
 import com.appjforce.serverjforce.exceptions.CustomUserException;
 import com.appjforce.serverjforce.model.AppUser;
 import com.appjforce.serverjforce.model.UserPosts;
+import com.appjforce.serverjforce.model.enumeration.PostStatus;
 import com.appjforce.serverjforce.repository.PostRepository;
 import com.appjforce.serverjforce.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -38,6 +41,7 @@ public class UserServiceImpl implements UserService{
     public String addUser(AppUser appuser) {
         log.info("Inside addUser() method of UserController");
         try {
+            appuser.setUsername(appuser.getUsername().toLowerCase(Locale.ROOT));
             userRepo.saveAndFlush(appuser);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
@@ -87,10 +91,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserPosts updateUser(long id, UserPosts userpost) {
+    public UserPosts updateUser(UUID id, UserPosts userpost) {
         log.info("Inside updateUser() method of UserService");
         try {
-            postRepo.saveById(id, userpost.getUserposts());
+            postRepo.saveById(id.toString(), userpost.getUserposts());
         } catch (Exception e){
             throw new CustomUserException(e.getMessage());
         }
@@ -98,7 +102,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void deletePost(Long id) {
+    public void deletePost(UUID id) {
         log.info("Inside deletePost() method of UserService");
         try {
             postRepo.deleteById(id);
@@ -106,4 +110,38 @@ public class UserServiceImpl implements UserService{
             throw new CustomUserException(e.getMessage());
         }
     }
+
+    @Override
+    public String approveRejectPost(UUID id, UserPosts userPosts) {
+        log.info("Inside approveRejectPost() method of PostController");
+
+        if (userPosts.getApproved().toString().toUpperCase() == PostStatus.APPROVED.toString()) {
+            userPosts.setApproved(PostStatus.APPROVED);
+            System.err.println(PostStatus.APPROVED);
+        } else if (userPosts.getApproved().toString().toUpperCase() == PostStatus.REJECTED.toString()) {
+            userPosts.setApproved(PostStatus.REJECTED);
+        } else {
+            throw new CustomUserException("Approval status can either be Approved or Rejected");
+        }
+
+        try{
+            postRepo.updateUserPostSetPost(id.toString(), userPosts.getApproved().toString());
+
+        } catch(DataIntegrityViolationException e) {
+            new CustomUserException(e.getMessage());
+        }
+        return "Approve/Reject Successful";
+    }
+
+//    @Override
+//    public String approvePost(long id) {
+//        log.info("Inside approvePost() method of PostController");
+//
+//        try {
+//            postRepo.updatePost(id);
+//        } catch(DataIntegrityViolationException e){
+//            new CustomUserException(e.getMessage());
+//        }
+//        return "User Post Approved";
+//    }
 }

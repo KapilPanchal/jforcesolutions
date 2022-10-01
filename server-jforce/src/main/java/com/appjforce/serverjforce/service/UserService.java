@@ -4,6 +4,7 @@ import com.appjforce.serverjforce.model.AppUser;
 import com.appjforce.serverjforce.model.UserPosts;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
     List<AppUser> getAllUsers();
@@ -18,7 +19,9 @@ public interface UserService {
 
     UserPosts getPostByPost(String userpost);
 
-    UserPosts updateUser(long id, UserPosts userpost);
+    UserPosts updateUser(UUID id, UserPosts userpost);
 
-    void deletePost(Long id);
+    void deletePost(UUID id);
+
+    String approveRejectPost(UUID id, UserPosts userPosts);
 }

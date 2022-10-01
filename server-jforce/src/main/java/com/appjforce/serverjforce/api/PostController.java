@@ -1,6 +1,5 @@
 package com.appjforce.serverjforce.api;
 
-import com.appjforce.serverjforce.model.AppUser;
 import com.appjforce.serverjforce.model.Response;
 import com.appjforce.serverjforce.model.UserPosts;
 import com.appjforce.serverjforce.service.UserService;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -21,6 +21,12 @@ public class PostController {
 
     @Autowired
     private UserService userService;
+
+    /**
+     * Api for getting all Posts from all Users as a list
+     * This method is accessible to ROLE_ADMIN only
+     *
+     * */
 
     @GetMapping(path = "/get-posts")
     public ResponseEntity<Response> getAllPosts(){
@@ -35,6 +41,11 @@ public class PostController {
                 .build());
     }
 
+    /**
+     * Api for adding Posts to the Database from users
+     * This method is accessible to ROLE_USERS only
+     *
+     * */
     @PostMapping(path = "/add-post")
     public ResponseEntity<Response> addPost(@RequestBody UserPosts userPost){
         log.info("Inside addPost() method of PostController");
@@ -48,8 +59,13 @@ public class PostController {
                 .build());
     }
 
+    /**
+     * Api for Updating Posts to the Database
+     * This method is accessible to ROLE_ADMIN only
+     *
+     * */
     @PutMapping(path = "/update/{id}")
-    public ResponseEntity<Response> updatePost(@PathVariable("id") long id, @RequestBody UserPosts userPost){
+    public ResponseEntity<Response> updatePost(@PathVariable("id") UUID id, @RequestBody UserPosts userPost){
         log.info("Inside updatePost() method of PostController");
         return ResponseEntity.ok(
                 Response.builder()
@@ -61,9 +77,13 @@ public class PostController {
                         .build()
         );
     }
-
+    /**
+     * Api for Deleting User Posts from the Database
+     * This method is accessible to ROLE_ADMIN and ROLE_USER
+     *
+     * */
     @DeleteMapping(path = "/delete/{id}")
-    public ResponseEntity<Response> deletePost(@PathVariable("id") Long id){
+    public ResponseEntity<Response> deletePost(@PathVariable("id") UUID id){
         log.info("Inside deletePost() method of PostController");
         userService.deletePost(id);
         return ResponseEntity.ok(
@@ -74,5 +94,25 @@ public class PostController {
                         .statusCode(HttpStatus.OK.value())
                         .build()
         );
+    }
+
+    /**
+     * Api for Approving User Posts
+     * This method is accessible to ROLE_ADMIN only
+     *
+     * */
+    @PutMapping(path = "/approve/{id}")
+    public ResponseEntity<Response> approveRejectPosts(@PathVariable("id") UUID id,
+                                                       @RequestBody UserPosts userPost){
+        log.info("Inside approvePosts() method of PostController");
+
+        String postApproveStatus = userService.approveRejectPost(id, userPost);
+
+        return ResponseEntity.ok(Response.builder()
+               .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
+               .message(postApproveStatus)
+               .status(HttpStatus.OK)
+               .statusCode(HttpStatus.OK.value())
+               .build());
     }
 }

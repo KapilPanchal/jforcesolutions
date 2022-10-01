@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -25,11 +26,13 @@ import java.io.Serializable;
 public class AppUser implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "app_user_sequence",
-                        sequenceName = "app_user_sequence",
-                        allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "app_user_sequence")
+//    @SequenceGenerator(name = "app_user_sequence",
+//                        sequenceName = "app_user_sequence",
+//                        allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+//                        generator = "app_user_sequence")
+    @GeneratedValue(generator = "reviews_uuid2")
+    @GenericGenerator(name = "reviews_uuid2", strategy = "uuid2")
     private long id;
 
     @NotEmpty(message = "Name cannot be empty.")

@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<AppUser, Long> {
+public interface UserRepository extends JpaRepository<AppUser, UUID> {
     @Query(value = "SELECT * FROM appjforcesch.appuser WHERE username = ?1",
             nativeQuery = true)
     Optional<AppUser> getByUsername(String username);
