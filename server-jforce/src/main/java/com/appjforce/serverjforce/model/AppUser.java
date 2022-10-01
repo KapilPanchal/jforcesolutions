@@ -27,11 +27,6 @@ import java.util.UUID;
 public class AppUser implements Serializable {
 
     @Id
-//    @SequenceGenerator(name = "app_user_sequence",
-//                        sequenceName = "app_user_sequence",
-//                        allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-//                        generator = "app_user_sequence")
     @GeneratedValue(generator = "reviews_uuid2")
     @GenericGenerator(name = "reviews_uuid2", strategy = "uuid2")
     private UUID id;

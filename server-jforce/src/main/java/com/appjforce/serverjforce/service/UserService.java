@@ -24,4 +24,6 @@ public interface UserService {
     void deletePost(UUID id);
 
     String approveRejectPost(UUID id, UserPosts userPosts);
+
+    String changeUserRole(UUID id, AppUser appUser);
 }

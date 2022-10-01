@@ -29,6 +29,7 @@ public class PostController {
      * */
 
     @GetMapping(path = "/get-posts")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response> getAllPosts(){
         log.info("Inside getAllPosts() method of PostController");
 
@@ -102,6 +103,7 @@ public class PostController {
      *
      * */
     @PutMapping(path = "/approve/{id}")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response> approveRejectPosts(@PathVariable("id") String id,
                                                        @RequestBody UserPosts userPost){
         log.info("Inside approveRejectPosts() method of PostController");

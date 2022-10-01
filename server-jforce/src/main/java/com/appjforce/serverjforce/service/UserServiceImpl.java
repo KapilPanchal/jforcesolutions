@@ -123,7 +123,6 @@ public class UserServiceImpl implements UserService{
         } else {
             throw new CustomUserException("Approval status can either be Approved or Rejected");
         }
-
         try{
             postRepo.updateUserPostSetPost(id, userPosts.getApproved().toString());
 
@@ -133,17 +132,14 @@ public class UserServiceImpl implements UserService{
         return "Approve/Reject Successful";
     }
 
-
-    /////////////
-//    @Override
-//    public String approvePost(long id) {
-//        log.info("Inside approvePost() method of PostController");
-//
-//        try {
-//            postRepo.updatePost(id);
-//        } catch(DataIntegrityViolationException e){
-//            new CustomUserException(e.getMessage());
-//        }
-//        return "User Post Approved";
-//    }
+    @Override
+    public String changeUserRole(UUID id, AppUser appUser) {
+        log.info("Inside changeUserRole() method of UserService");
+        try {
+            userRepo.updateUserByRole(id, appUser.getRole().toString().toUpperCase());
+        } catch (DataIntegrityViolationException e) {
+            throw new CustomUserException(e.getMessage());
+        }
+        return "User Role Updated Successfully";
+    }
 }

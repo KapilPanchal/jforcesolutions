@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -27,6 +28,7 @@ public class UserController {
      *
      * */
     @GetMapping(path = "/get-users")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response> getAllUsers(){
         log.info("Inside getAllUsers() method of UserController");
 
@@ -57,6 +59,27 @@ public class UserController {
                 .statusCode(HttpStatus.CREATED.value())
                 .message(addStatus)
                         .data(Map.of("user", appuser))
+                .build());
+    }
+
+    /**
+     * Admin should be able to create other admin
+     * when a new user is created default role
+     * assigned to the user is ROLE_USER
+     * */
+    @PutMapping(path = "change-role/{id}")
+//    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Response> changeUserRole(@PathVariable("id") String id,
+                                                   @RequestBody AppUser appUser){
+        log.info("Inside changeUserRole() method of UserController");
+
+        String statusChangeRole = userService.changeUserRole(UUID.fromString(id), appUser);
+
+        return ResponseEntity.ok(Response.builder()
+                .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
+                .status(HttpStatus.OK)
+                .statusCode(HttpStatus.OK.value())
+                .message(statusChangeRole)
                 .build());
     }
 }
