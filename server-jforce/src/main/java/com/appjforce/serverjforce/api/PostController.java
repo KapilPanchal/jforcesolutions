@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZoneId;
@@ -27,12 +28,10 @@ public class PostController {
      * This method is accessible to ROLE_ADMIN only
      *
      * */
-
     @GetMapping(path = "/get-posts")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Response> getAllPosts(){
         log.info("Inside getAllPosts() method of PostController");
-
         return ResponseEntity.ok(Response.builder()
                 .message("Fetching all posts successful")
                 .status(HttpStatus.FOUND)
@@ -48,6 +47,7 @@ public class PostController {
      *
      * */
     @PostMapping(path = "/add-post")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Response> addPost(@RequestBody UserPosts userPost){
         log.info("Inside addPost() method of PostController");
         String postAddStatus = userService.addPost(userPost);
@@ -66,7 +66,8 @@ public class PostController {
      *
      * */
     @PutMapping(path = "/update/{id}")
-    public ResponseEntity<Response> updatePost(@PathVariable("id") String id, @RequestBody UserPosts userPost){
+    public ResponseEntity<Response> updatePost(@PathVariable("id") String id,
+                                               @RequestBody UserPosts userPost){
         log.info("Inside updatePost() method of PostController");
         return ResponseEntity.ok(
                 Response.builder()
@@ -78,6 +79,7 @@ public class PostController {
                         .build()
         );
     }
+
     /**
      * Api for Deleting User Posts from the Database
      * This method is accessible to ROLE_ADMIN and ROLE_USER
@@ -103,13 +105,11 @@ public class PostController {
      *
      * */
     @PutMapping(path = "/approve/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Response> approveRejectPosts(@PathVariable("id") String id,
                                                        @RequestBody UserPosts userPost){
         log.info("Inside approveRejectPosts() method of PostController");
-
         String postApproveStatus = userService.approveRejectPost(UUID.fromString(id), userPost);
-
         return ResponseEntity.ok(Response.builder()
                .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
                .message(postApproveStatus)

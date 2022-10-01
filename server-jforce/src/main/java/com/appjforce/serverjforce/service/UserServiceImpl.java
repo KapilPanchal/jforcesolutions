@@ -4,6 +4,7 @@ import com.appjforce.serverjforce.exceptions.CustomUserException;
 import com.appjforce.serverjforce.model.AppUser;
 import com.appjforce.serverjforce.model.UserPosts;
 import com.appjforce.serverjforce.model.enumeration.PostStatus;
+import com.appjforce.serverjforce.model.enumeration.Role;
 import com.appjforce.serverjforce.repository.PostRepository;
 import com.appjforce.serverjforce.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -135,6 +136,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public String changeUserRole(UUID id, AppUser appUser) {
         log.info("Inside changeUserRole() method of UserService");
+        if(appUser.getRole().toString().toUpperCase() == Role.ADMIN.toString()){
+            appUser.setRole(Role.ADMIN);
+        } else if(appUser.getRole().toString().toUpperCase() == Role.USER.toString()) {
+            appUser.setRole(Role.USER);
+        } else {
+            throw new CustomUserException("Role does not exist");
+        }
         try {
             userRepo.updateUserByRole(id, appUser.getRole().toString().toUpperCase());
         } catch (DataIntegrityViolationException e) {
