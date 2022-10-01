@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class UserPosts implements Serializable {
     @Column(nullable = false)
     private String userposts;
 
-    private ZonedDateTime timestamp;
+    private ZonedDateTime timestamp = ZonedDateTime.now(ZoneId.of("Z"));
 
     @Builder.Default
     @Enumerated(value = EnumType.STRING)

@@ -21,20 +21,11 @@ public interface PostRepository extends JpaRepository<UserPosts, UUID> {
             nativeQuery = true)
     @Modifying
     @Transactional
-    void saveById(String id, String userpost);
+    void saveById(UUID id, String userpost);
 
     @Query(value = "UPDATE appjforcesch.userpost SET approved=?2 WHERE id= ?1",
             nativeQuery = true)
     @Modifying
     @Transactional
-    void updateUserPostSetPost(String id, String status);
+    void updateUserPostSetPost(UUID id, String status);
 }
-
-//    @Query(value = "UPDATE appjforcesch.userpost SET approved=?2 WHERE id= ?1")
-//    @Modifying
-//    @Transactional
-//    void saveByUserPosts(long id, String status);
-//    @Query(value = "UPDATE appjforcesch.userpost SET approved=?2 WHERE id= ?1")
-//    @Modifying
-//    @Transactional
-//    void updateUserPostSetPost(long id, String status);

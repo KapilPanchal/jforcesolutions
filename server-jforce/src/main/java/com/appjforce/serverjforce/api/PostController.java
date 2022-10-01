@@ -65,11 +65,11 @@ public class PostController {
      *
      * */
     @PutMapping(path = "/update/{id}")
-    public ResponseEntity<Response> updatePost(@PathVariable("id") UUID id, @RequestBody UserPosts userPost){
+    public ResponseEntity<Response> updatePost(@PathVariable("id") String id, @RequestBody UserPosts userPost){
         log.info("Inside updatePost() method of PostController");
         return ResponseEntity.ok(
                 Response.builder()
-                        .data(Map.of("postupdated", userService.updateUser(id, userPost)))
+                        .data(Map.of("postupdated", userService.updateUser(UUID.fromString(id), userPost)))
                         .message("Post Updated successfully")
                         .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
                         .status(HttpStatus.OK)
@@ -83,9 +83,9 @@ public class PostController {
      *
      * */
     @DeleteMapping(path = "/delete/{id}")
-    public ResponseEntity<Response> deletePost(@PathVariable("id") UUID id){
+    public ResponseEntity<Response> deletePost(@PathVariable("id") String id){
         log.info("Inside deletePost() method of PostController");
-        userService.deletePost(id);
+        userService.deletePost(UUID.fromString(id));
         return ResponseEntity.ok(
                     Response.builder()
                         .message("Deleted post successfully")
@@ -102,11 +102,11 @@ public class PostController {
      *
      * */
     @PutMapping(path = "/approve/{id}")
-    public ResponseEntity<Response> approveRejectPosts(@PathVariable("id") UUID id,
+    public ResponseEntity<Response> approveRejectPosts(@PathVariable("id") String id,
                                                        @RequestBody UserPosts userPost){
         log.info("Inside approveRejectPosts() method of PostController");
 
-        String postApproveStatus = userService.approveRejectPost(id, userPost);
+        String postApproveStatus = userService.approveRejectPost(UUID.fromString(id), userPost);
 
         return ResponseEntity.ok(Response.builder()
                .timestamp(ZonedDateTime.now(ZoneId.of("Z")))

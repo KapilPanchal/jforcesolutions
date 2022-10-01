@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService{
     public UserPosts updateUser(UUID id, UserPosts userpost) {
         log.info("Inside updateUser() method of UserService");
         try {
-            postRepo.saveById(id.toString(), userpost.getUserposts());
+            postRepo.saveById(id, userpost.getUserposts());
         } catch (Exception e){
             throw new CustomUserException(e.getMessage());
         }
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService{
         }
 
         try{
-            postRepo.updateUserPostSetPost(id.toString(), userPosts.getApproved().toString());
+            postRepo.updateUserPostSetPost(id, userPosts.getApproved().toString());
 
         } catch(DataIntegrityViolationException e) {
             new CustomUserException(e.getMessage());
