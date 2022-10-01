@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public String approveRejectPost(UUID id, UserPosts userPosts) {
-        log.info("Inside approveRejectPost() method of PostController");
+        log.info("Inside approveRejectPost() method of PostService");
 
         if (userPosts.getApproved().toString().toUpperCase() == PostStatus.APPROVED.toString()) {
             userPosts.setApproved(PostStatus.APPROVED);
@@ -133,6 +133,8 @@ public class UserServiceImpl implements UserService{
         return "Approve/Reject Successful";
     }
 
+
+    /////////////
 //    @Override
 //    public String approvePost(long id) {
 //        log.info("Inside approvePost() method of PostController");

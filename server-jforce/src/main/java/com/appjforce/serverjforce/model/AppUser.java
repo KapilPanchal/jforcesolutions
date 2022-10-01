@@ -13,6 +13,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity(name = "AppUser")
 @Table(name = "appuser",
@@ -33,7 +34,7 @@ public class AppUser implements Serializable {
 //                        generator = "app_user_sequence")
     @GeneratedValue(generator = "reviews_uuid2")
     @GenericGenerator(name = "reviews_uuid2", strategy = "uuid2")
-    private long id;
+    private UUID id;
 
     @NotEmpty(message = "Name cannot be empty.")
     @Column(nullable = false, unique = true)

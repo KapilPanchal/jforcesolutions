@@ -10,6 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Entity(name = "UserPost")
 @Table (name = "userpost",
@@ -30,7 +31,7 @@ public class UserPosts implements Serializable {
 //            generator = "app_posts_sequence")
     @GeneratedValue(generator = "reviews_uuid2")
     @GenericGenerator(name = "reviews_uuid2", strategy = "uuid2")
-    private long id;
+    private UUID id;
 
     @Column(nullable = false)
     private String userposts;

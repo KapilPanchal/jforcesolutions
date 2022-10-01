@@ -104,7 +104,7 @@ public class PostController {
     @PutMapping(path = "/approve/{id}")
     public ResponseEntity<Response> approveRejectPosts(@PathVariable("id") UUID id,
                                                        @RequestBody UserPosts userPost){
-        log.info("Inside approvePosts() method of PostController");
+        log.info("Inside approveRejectPosts() method of PostController");
 
         String postApproveStatus = userService.approveRejectPost(id, userPost);
 
