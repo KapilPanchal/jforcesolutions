@@ -31,10 +31,9 @@ public class UserPrincipalService implements UserDetailsService {
         }
 
         UserDetails userDetails = User.withUsername(appUser.getUsername())
-                                                    .password(appUser.getPassword())
-                                                    .roles(appUser.getRole().toString())
-                                                    .authorities(appUser.getRole().toString())
-                                                    .build();
+                                       .password(appUser.getPassword())
+                                       .roles(appUser.getRole().toString())
+                                       .build();
         return userDetails;
     }
 }

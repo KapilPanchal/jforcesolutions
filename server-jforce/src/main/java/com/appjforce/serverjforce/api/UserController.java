@@ -30,8 +30,7 @@ public class UserController {
      *
      * */
     @GetMapping(path = "/get-users")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    @RolesAllowed({ "ROLE_ADMIN" })
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Response> getAllUsers(){
         log.info("Inside getAllUsers() method of UserController");
 
@@ -71,7 +70,7 @@ public class UserController {
      * assigned to the user is ROLE_USER
      * */
     @PutMapping(path = "change-role/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Response> changeUserRole(@PathVariable("id") String id,
                                                    @RequestBody AppUser appUser){
         log.info("Inside changeUserRole() method of UserController");

@@ -29,7 +29,7 @@ public class PostController {
      *
      * */
     @GetMapping(path = "/get-posts")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Response> getAllPosts(){
         log.info("Inside getAllPosts() method of PostController");
         return ResponseEntity.ok(Response.builder()
@@ -47,7 +47,7 @@ public class PostController {
      *
      * */
     @PostMapping(path = "/add-post")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Response> addPost(@RequestBody UserPosts userPost){
         log.info("Inside addPost() method of PostController");
         String postAddStatus = userService.addPost(userPost);
@@ -66,6 +66,7 @@ public class PostController {
      *
      * */
     @PutMapping(path = "/update/{id}")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Response> updatePost(@PathVariable("id") String id,
                                                @RequestBody UserPosts userPost){
         log.info("Inside updatePost() method of PostController");
@@ -86,6 +87,7 @@ public class PostController {
      *
      * */
     @DeleteMapping(path = "/delete/{id}")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Response> deletePost(@PathVariable("id") String id){
         log.info("Inside deletePost() method of PostController");
         userService.deletePost(UUID.fromString(id));
@@ -105,7 +107,7 @@ public class PostController {
      *
      * */
     @PutMapping(path = "/approve/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Response> approveRejectPosts(@PathVariable("id") String id,
                                                        @RequestBody UserPosts userPost){
         log.info("Inside approveRejectPosts() method of PostController");
